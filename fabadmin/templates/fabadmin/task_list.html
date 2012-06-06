@@ -50,6 +50,30 @@
   font-weight : normal;
   }
 
+  td {
+    padding: 2px;
+  }
+  pre  {
+    margin: 2px;
+  }
+  ul {
+    margin: 0px;
+    padding-left: 20px;
+  }
+  tr.odd {
+    background-color:#FFFFFF;
+  }
+  tr.even {
+    background-color:#F0F0F0;
+  }
+  
+#formlist li
+{
+display: inline;
+list-style-type: none;
+padding-right: 20px;
+}
+
   .ansi1 { font-weight : bold; }
   .ansi3 { font-weight : italic; }
   .ansi4 { text-decoration: underline; }
@@ -524,6 +548,24 @@
 
 {% block content %}
 <div id="content-main">
+  <h1>Fabric console:</h1>
+  <form method="post" id="fabfile_form" action=".">
+    {% csrf_token %}
+    <ul id='formlist'>
+      {{ fabfile_form.as_ul }}
+        <li>
+          <input type="submit" name="submit" value="Execute" />
+        </li>
+    </ul>
+  </form>
+
+  {% if output %}
+  <h1>Fabric output:</h1>
+  <div id="fabric_output">
+    <pre>{{ output|safe }}</pre>
+  </div>
+  {% endif %}
+  <br>
   <h1>List of fabric tasks:</h1>
   <table>
     <thead>
@@ -537,11 +579,11 @@
     </thead>
     <tbody>
       {% for task in tasks %}
-      <tr>
+      <tr class="{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
         <td>
           <strong>{{ task.name }}</strong>
         </td>
-        <td>
+        <td width="500">
           <pre>{{ task.description }}</pre>
         </td>
         <td>
@@ -565,23 +607,6 @@
       {% endfor %}
     </tbody>
   </table>
-  <h1>Fabric console:</h1>
-  <form method="post" id="fabfile_form" action=".">
-    <table style="width: 400px">
-      {{ fabfile_form.as_table }}
-      <tr>
-        <td>&nbsp;</td>
-        <td>
-          <input type="submit" name="submit" value="Execute" />
-        </td>
-      </tr>
-    </table>
-  </form>
-  {% if output %}
-  <h1>Fabric output:</h1>
-  <div id="fabric_output">
-    <pre>{{ output|safe }}</pre>
-  </div>
-  {% endif %}
+
 </div>
 {% endblock %}
