@@ -13,6 +13,11 @@ INSTALLED_APPS. Then set the FABADMIN_FABFILE setting to the full path
 of your fabfile like so::
 
     FABADMIN_FABFILE = "/full/path/to/fabfile.py"
+    
+Usage
+=====
+
+http://your-url.com:admin/fabadmin/task_list/
 
 Requirements
 ============
